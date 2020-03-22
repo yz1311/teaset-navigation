@@ -3,17 +3,23 @@
 
 由于react-navigation v5的变更过大，所以单独将该帮助文件拆分出来
 
+## 特色
+
+* 维护几个常用的API，后续不受react-navigation影响
+* 自带防止快速点击多次响应的问题
+* 全局静态方法调用，不需要高阶组件支持
+
 
 ## 安装
 
-react-navigation v5版本请安装:
+react-navigation v5(@react-navigation/native)以上版本请安装:
 
 ```
 npm install --save teaset @yz1311/teaset-navigation
 
 ```
 
-react-navigation v5安装0.2.0以下版本:
+react-navigation v5以下安装0.2.0以下版本:
 
 ```
 npm install --save teaset @yz1311/teaset-navigation@0.1.0

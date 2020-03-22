@@ -1,10 +1,5 @@
-import {
-    NavigationActions,
-    StackActions,
-    NavigationScreenProp,
-    NavigationParams,
-    NavigationRoute
-  } from "react-navigation";
+import {CommonActions, StackActions} from "@react-navigation/native";
+import {Route, NavigationState, PartialState} from '@react-navigation/routers'
 
 var NAVIGATION_HELPER_BLOBAL_NAME = `NavigationHelper`;
 
@@ -14,12 +9,26 @@ var NAVIGATION_HELPER_BLOBAL_NAME = `NavigationHelper`;
       global[NAVIGATION_HELPER_BLOBAL_NAME] = helper;
     }
  
-    static navigation: NavigationScreenProp<
-      NavigationRoute<NavigationParams>,
-      NavigationParams
-    >;
+    static navigation: any;
 
-    static navRouters: NavigationRoute[];
+    static navRouters: (Route<string> & {
+      state?: NavigationState | PartialState<NavigationState>;
+  })[];
+
+    static CANTOUCH = true;
+
+    //延迟的时间
+    static delay = 0.8;
+
+    static canTouch() {
+      if(this.CANTOUCH) {
+        this.CANTOUCH = false;
+        setTimeout(() => {
+          this.CANTOUCH = true;
+        }, this.delay*1000);
+        return false;
+      }
+    }
 
     /**
      * 由于虽然可以使用redux获取到routes属性进行判断
@@ -33,15 +42,18 @@ var NAVIGATION_HELPER_BLOBAL_NAME = `NavigationHelper`;
     }
 
     static goBack() {
-      const backAction = NavigationActions.back();
+      const backAction = CommonActions.goBack();
       this.navigation.dispatch(backAction);
     }
 
     static navigate(routeName: string, params) {
-      const navigateAction = NavigationActions.navigate({
-        routeName: routeName,
-        params: params
-      });
+      if(!this.canTouch()) {
+        return;
+      }
+      const navigateAction = CommonActions.navigate(
+        routeName,
+        params
+      );
       this.navigation.dispatch(navigateAction);
     }
 
@@ -51,31 +63,36 @@ var NAVIGATION_HELPER_BLOBAL_NAME = `NavigationHelper`;
      * @param params
      */
     static push(routeName: string, params) {
-      const pushAction = StackActions.push({
-        routeName: routeName,
-        params: params
-      });
+      if(!this.canTouch()) {
+        return;
+      }
+      const pushAction = StackActions.push(
+        routeName,
+        params
+      );
       this.navigation.dispatch(pushAction);
     }
 
     static replace(routeName: string, params) {
-      const navigateAction = StackActions.replace({
-        routeName: routeName,
-        params: params
-      });
+      if(!this.canTouch()) {
+        return;
+      }
+      const navigateAction = StackActions.replace(
+        routeName,
+        params
+      );
       this.navigation.dispatch(navigateAction);
     }
 
     static popN(num: number) {
-      if (this.navRouters.length - num < 1) {
-        console.log("无法后退了");
+      if(!this.canTouch()) {
         return;
       }
-      //key为需要后退到的页面的前一页面的key
-      let key = this.navRouters[this.navRouters.length - num].key;
-      const backAction = NavigationActions.back({
-        key: key
-      });
+      if (this.navRouters.length - num < 1) {
+        console.info("无法后退了");
+        return;
+      }
+      const backAction = StackActions.pop(num);
       this.navigation.dispatch(backAction);
     }
 
@@ -83,38 +100,44 @@ var NAVIGATION_HELPER_BLOBAL_NAME = `NavigationHelper`;
       routeName: string,
       params = {} //已测试参数可以传递
     ) {
-      let resetAction = StackActions.reset({
+      if(!this.canTouch()) {
+        return;
+      }
+      let resetAction = CommonActions.reset({
         index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: routeName, params: params })
+        routes: [
+          {name: routeName, params: params}
         ]
       });
       this.navigation.dispatch(resetAction);
     }
 
-    //Todo:待测试
     static popToTop() {
+      if(!this.canTouch()) {
+        return;
+      }
       var numToPop = this.navRouters.length - 1;
       this.popN(numToPop);
     }
 
     static popToIndex(indexOfRoute: number) {
+      if(!this.canTouch()) {
+        return;
+      }
       var numToPop = this.navRouters.length - 1 - indexOfRoute;
       this.popN(numToPop);
     }
 
     static popToRoute(routeName: string) {
-      let indexOfRoute = -1;
-      for (let tempIndex in this.navRouters) {
-        if (this.navRouters[tempIndex].routeName == routeName) {
-          indexOfRoute = parseInt(tempIndex);
-          break;
-        }
-      }
-      if (indexOfRoute === -1) {
+      if(!this.canTouch()) {
         return;
       }
-      var numToPop = this.navRouters.length - 1 - indexOfRoute;
-      this.popN(numToPop);
+      let index = this.navRouters.map(x => x.name).indexOf(routeName);
+      if (index >= 0) {
+        const backAction = StackActions.pop(this.navRouters.length - index - 1);
+        this.navigation.dispatch(backAction);
+      } else {
+        console.info("找不到路由");
+      }
     }
   }
