@@ -1,0 +1,32 @@
+{
+  "name": "@yz1311/teaset-navigation",
+  "version": "0.1.0",
+  "description": "针对react-navigation的工具库",
+  "main": "index.js",
+  "types": "index.d.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yz1311/teaset-navigation.git"
+  },
+  "keywords": [
+    "react-navigation",
+    "teaset",
+    "teaset-navigation",
+    "navigation"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "typescript": "^3.5.2"
+  },
+  "author": "yz1311",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yz1311/teaset-navigation/issues"
+  },
+  "homepage": "https://github.com/yz1311/teaset-navigation#readme"
+}
