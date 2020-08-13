@@ -13,7 +13,7 @@ var NAVIGATION_HELPER_BLOBAL_NAME = `NavigationHelper`;
 
     static navRouters: (Route<string> & {
       state?: NavigationState | PartialState<NavigationState>;
-  })[];
+  })[] = [];
 
     static CANTOUCH = true;
 
@@ -26,8 +26,9 @@ var NAVIGATION_HELPER_BLOBAL_NAME = `NavigationHelper`;
         setTimeout(() => {
           this.CANTOUCH = true;
         }, this.delay*1000);
-        return false;
+        return true;
       }
+      return false;
     }
 
     /**
@@ -38,7 +39,18 @@ var NAVIGATION_HELPER_BLOBAL_NAME = `NavigationHelper`;
      */
     //当前是不是最顶层的页面
     static isTopScreen(key: string) {
+      console.warn(
+        'NavigationHelper.isTopScreen is deprecated, call NavigationHelper.isTopScreenByKey instead',
+      );
       return key === this.navRouters[this.navRouters.length - 1].key;
+    }
+
+    static isTopScreenByKey(key: string) {
+      return key === this.navRouters[this.navRouters.length - 1].key;
+    }
+
+    static isTopScreenByName(routeName: string) {
+      return routeName === this.navRouters[this.navRouters.length - 1].name;
     }
 
     static goBack() {

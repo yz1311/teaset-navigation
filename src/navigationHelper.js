@@ -19,7 +19,14 @@ export default class navigationHelper {
      */
     //当前是不是最顶层的页面
     static isTopScreen(key) {
+        console.warn('NavigationHelper.isTopScreen is deprecated, call NavigationHelper.isTopScreenByKey instead');
         return key === this.navRouters[this.navRouters.length - 1].key;
+    }
+    static isTopScreenByKey(key) {
+        return key === this.navRouters[this.navRouters.length - 1].key;
+    }
+    static isTopScreenByName(routeName) {
+        return routeName === this.navRouters[this.navRouters.length - 1].name;
     }
     static goBack() {
         const backAction = CommonActions.goBack();
@@ -107,6 +114,7 @@ navigationHelper.init = function (helper, name = NAVIGATION_HELPER_BLOBAL_NAME) 
     NAVIGATION_HELPER_BLOBAL_NAME = name;
     global[NAVIGATION_HELPER_BLOBAL_NAME] = helper;
 };
+navigationHelper.navRouters = [];
 navigationHelper.CANTOUCH = true;
 //延迟的时间
 navigationHelper.delay = 0.8;

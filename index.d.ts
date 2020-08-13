@@ -4,8 +4,17 @@ interface NavigationHelperProps {
     init: (helper,name?:string) => void,
     navigation: any,
     //路由栈
+    //类型为 
+    /**
+     * (Route<string> & {
+     *   state?: NavigationState | PartialState<NavigationState>;
+     * })[]
+     */
     navRouters: any,
+    //已过时，用isTopScreenByKey或者isTopScreenByName替代
     isTopScreen: (key:string) => boolean,
+    isTopScreenByKey: (key:string) => boolean,
+    isTopScreenByName: (routeName:string) => boolean,
     goBack: () => void,
     push: (routeName: string, params?:any) => void,
     navigate: (routeName:string, params?:any) => void,

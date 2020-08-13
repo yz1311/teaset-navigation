@@ -1,6 +1,6 @@
 {
   "name": "@yz1311/teaset-navigation",
-  "version": "0.2.0",
+  "version": "0.2.3",
   "description": "针对react-navigation的工具库",
   "main": "index.js",
   "types": "index.d.js",
