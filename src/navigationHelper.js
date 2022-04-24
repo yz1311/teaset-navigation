@@ -83,16 +83,10 @@ export default class navigationHelper {
         this.navigation.dispatch(resetAction);
     }
     static popToTop() {
-        if (!this.canTouch()) {
-            return;
-        }
         var numToPop = this.navRouters.length - 1;
         this.popN(numToPop);
     }
     static popToIndex(indexOfRoute) {
-        if (!this.canTouch()) {
-            return;
-        }
         var numToPop = this.navRouters.length - 1 - indexOfRoute;
         this.popN(numToPop);
     }

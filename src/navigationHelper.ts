@@ -125,17 +125,11 @@ var NAVIGATION_HELPER_BLOBAL_NAME = `NavigationHelper`;
     }
 
     static popToTop() {
-      if(!this.canTouch()) {
-        return;
-      }
       var numToPop = this.navRouters.length - 1;
       this.popN(numToPop);
     }
 
     static popToIndex(indexOfRoute: number) {
-      if(!this.canTouch()) {
-        return;
-      }
       var numToPop = this.navRouters.length - 1 - indexOfRoute;
       this.popN(numToPop);
     }
